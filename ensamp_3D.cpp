@@ -380,13 +380,13 @@ int main(int argc,char* argv[])
     N=EN*1000000;
     cout<<"N="<<N<<"\n";
     //The initial configuration is opened from a file
-    infile.open("entropy_2para_4.dat");
+    infile.open("entropy_initial_!.dat");
     for(int i=0; !infile.eof(); i++)
     {
-        infile>>a>>b>>c>>d;
-        N_plus=float(b+EN)/2;
+        infile>>a>>b>>c;
+        N_plus=float(a+EN)/2;
         //Initial config is written to the entropy array
-        entropy_mp[int(a)][int(N_plus)]=float(c)/EN;
+        entropy_mp[int(b)][int(N_plus)]=float(c)/EN;
     }
     infile.close();
 
