@@ -456,7 +456,8 @@ int main(int argc,char* argv[])
             }
         snprintf(buffer,sizeof(char)*32,"Histogram_mp_%i.dat",j);
         his.open(buffer);
-        count=0;
+
+	        count=0;
         flag=0;
         //The Histogram is written after each sampling
         for(int i=0; i<3*EN+1; i++)
@@ -484,9 +485,23 @@ int main(int argc,char* argv[])
                 }
         }
         en.close();
+	long double dos;
+	for(int i=0; i<3*EN+1; i++)
+	    {
+		dos=0;
+            for(int j=0; j<EN+1; j++)
+            {
+                if (Histogram_mp[i][j]!=0)
+			dos=dos+exp(EN*(entropy_mp[i][j]-entropy_mp[3*int(EN)][int(EN)]));
+		}
+		if(dos!=0)
+			en_1<<i<<"\t"<<log(dos)<<"\n";
+	}
+	en_1.close();
+
         //IF the histogram is flat enough break
-        //if(float(count)/flag<.005)
-           // break;
+        if(float(count)/flag<.005)
+            break;
 
 
     }
