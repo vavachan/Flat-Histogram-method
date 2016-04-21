@@ -6,7 +6,7 @@ import sys
 L=float(sys.argv[1])
 def func(x,p,a,b,c,d):
 	#print x
-	return p*x**4+b*x**2+d
+	return p*x**2+b*x**1+d
 exec "A=np.loadtxt('data_%d.dat')" %L
 N=int(L*L*L)
 entropy_L=np.zeros(shape=(N+1,3*N+1))

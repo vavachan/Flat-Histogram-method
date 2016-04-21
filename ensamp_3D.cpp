@@ -380,7 +380,7 @@ int main(int argc,char* argv[])
     N=EN*1000000;
     cout<<"N="<<N<<"\n";
     //The initial configuration is opened from a file
-    infile.open("entropy_initial_!.dat");
+    infile.open("entropy_8_ini.dat");
     for(int i=0; !infile.eof(); i++)
     {
         infile>>a>>b>>c;
