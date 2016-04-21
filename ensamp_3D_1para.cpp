@@ -162,7 +162,7 @@ int flip(int E)
 {
     //cout<<Histogram_mp[15][0]<<"\t"<<"before"<<"\n";
     int Ni_plus=0,Ni_minus=0,Nj_plus=0,Nj_minus=0,Nk_plus=0,Nk_minus=0;
-    int X,Y,Z,n_1,n_2,delta_n,m1,m2,i,j,delta_m;
+    int X,Y,Z,n_1,n_2,delta_n,m2,i,j,delta_m;
     int EN=L*L*L;
     double alpha;
     float p;
@@ -188,6 +188,7 @@ int flip(int E)
         Nk_plus=0;
     if(Z==0)
         Nk_minus=L-1;
+    //m1=magnetization();
     if(ISING[X][Y][Z]==-1)
     {
         delta_m=2;
@@ -202,32 +203,27 @@ int flip(int E)
     delta_n=-1*(ISING[X][Y][Z]*ISING[X][Nj_plus][Z]+ISING[X][Y][Z]*ISING[X][Nj_minus][Z]+ISING[X][Y][Z]*ISING[Ni_plus][Y][Z]+ISING[X][Y][Z]*ISING[Ni_minus][Y][Z]+ISING[X][Y][Z]*ISING[X][Y][Nk_plus]+ISING[X][Y][Z]*ISING[X][Y][Nk_minus]);
     n_2=n_1+delta_n;
     alpha=exp(EN*(entropy[n_1]-entropy[n_2]));
-    //cout<<n_1<<"\t"<<n_2<<"\t"<<i<<"\t"<<j<<"\t"<<alpha<<"\n";
+//    cout<<n_1<<"\t"<<n_2<<"\t"<<i<<"\t"<<j<<"\t"<<alpha<<"\n";
     if (alpha<1)
     {
         p=float(rand())/RAND_MAX;
         if (p>alpha)
         {
-            Histogram_mp[n_1][i]=Histogram_mp[n_1][i]+1;
-            //    cout<<Histogram_mp[n_1][i]<<"\t"<<n_1<<"\t"<<i<<"\n";
+            Histogram_mp[n_1][i]++;//=Histogram_mp[n_1][i]+1;
             return n_1;
         }
         else
         {
-            //	    cout<<Histogram_mp[15][0]<<"\t"<<n_2<<"\n";
-            Histogram_mp[n_2][j]=Histogram_mp[n_2][j]+1;
-//	    cout<<Histogram_mp[15][0]<<"\t"<<n_2<<"\t"<<m2<<"\t"<<"after2"<<"\n";
-
-            ISING[X][Y][Z]=-1*ISING[X][Y][Z];
+            Histogram_mp[n_2][j]++;//=Histogram_mp[n_2][j]+1;
             m1=m2;
+            ISING[X][Y][Z]=-1*ISING[X][Y][Z];
             return n_2;
         }
     }
     else
     {
         ISING[X][Y][Z]=-1*ISING[X][Y][Z];
-        Histogram_mp[n_2][j]=Histogram_mp[n_2][j]+1;
-        // cout<<Histogram_mp[15][0]<<"\t"<<n_2/2<<"\t"<<"after3"<<"\n";
+        Histogram_mp[n_2][j]++;//=Histogram_mp[n_2][j]+1;
         m1=m2;
         return n_2;
     }
@@ -288,14 +284,14 @@ int main(int argc,char* argv[])
     snprintf(buffer,sizeof(char)*32,"entropy_1para_%i.dat",L);
     en_1.open(buffer);
     en_ini.open("entropy_1para_ini.dat");
-    N=EN*1000;
+    N=EN*1000000;
     for(int i=0; i<3*EN+1; i+=2)
     {
         en_ini>>a>>b;
         entropy[int(a)]=b;
         //cout<<a<<"\t"<<b<<"\n";
     }
-    for(int j=0; j<5; j++)
+    for(int j=0; j<10; j++)
     {
         for(int i=0; i<3*EN+1; i++)
             for(int j=0; j<EN+1; j++)
@@ -315,7 +311,6 @@ int main(int argc,char* argv[])
             {
                 E1=flip(E);
                 E=E1;
-                //cout<<Histogram_mp[192][64]<<"\t"<<Histogram_mp[192][0]<<"\t"<<k<<"\n";
             }
         }
         for(int i=0; i<3*EN+1; i++)
@@ -335,9 +330,10 @@ int main(int argc,char* argv[])
                 count++;
             }
         }
-        if(float(corr_his/count) < .05)
+	
+        cout<<float(corr_his/count)<<"\n";
+        if(float(corr_his/count) < .005)
         {
-            cout<<float(corr_his/count)<<"\n";
             break;
         }
 
