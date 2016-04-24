@@ -311,6 +311,7 @@ int flip(int E)
     n_2=n_1+-1*(ISING[X][Y][Z]*ISING[X][Nj_plus][Z]+ISING[X][Y][Z]*ISING[X][Nj_minus][Z]+ISING[X][Y][Z]*ISING[Ni_plus][Y][Z]+ISING[X][Y][Z]*ISING[Ni_minus][Y][Z]+ISING[X][Y][Z]*ISING[X][Y][Nk_plus]+ISING[X][Y][Z]*ISING[X][Y][Nk_minus]);//delta_n;
     alpha=exp(EN*(entropy_mp[n_1][i]-entropy_mp[n_2][j]));
     //alpha is the acceptance probability of the flip.
+    //cout<<n_1<<"\t"<<m1<<"\t"<<n_2<<"\t"<<m2<<"\t"<<alpha<<"\t"<<Histogram_mp[n_1][i]<<"\n";
     if (alpha<1)
     {
         p=float(rand())/RAND_MAX;
@@ -367,12 +368,10 @@ int main(int argc,char* argv[])
     float a,b,c,flag;
     long double d;
     srand(time(NULL));
-    ofstream en,cc,his,en_1;
+    ofstream en,cc,his,en_1,diff;
     ifstream en_ini,infile;
     char buffer[32];
     //These two file streams are for writing the 1_d entropy and histogram , ie as a funciton of just n
-    snprintf(buffer,sizeof(char)*32,"Histogram_%i.dat",L);
-    his.open(buffer);
     snprintf(buffer,sizeof(char)*32,"entropy_1para_%i.dat",L);
     en_1.open(buffer);
     en_ini.open("en.dat");
@@ -402,8 +401,10 @@ int main(int argc,char* argv[])
             }
         //loop to run the simulations with all inital condition.
         cout<<"n\tm"<<"\n";
-        for(int k=0; k<15; k++)
+        for(int k=3; k<15; k++)
         {
+		if(k==6 or k==7)
+			continue;
             //initializing with the k'th initial-config.
             initial(k);
             E=energy_n();
@@ -414,28 +415,8 @@ int main(int argc,char* argv[])
             clock_t begin =clock();
             for(long double i=0; i<N; i++)
             {
-//##############################################################################################################################
-//##############################################################################################################################
-                //the MC move.
-	
-////////(m1==0 and E == 160 )
-///////
-////////ut<<m1<<"\t"<<E<<"\n";
-////////r(int i=0;i<L;i++)
-////////out<<"\n\n";
-////////for(int j=0;j<L;j++)
-////////{
-////////cout<<"\n";
-////////for(int k=0;k<L;k++)
-////////	cout<<ISING[i][j][k]<<"\t";
-////////}
-////////}
-//////////break;
-////////}
                 E1=flip(E);
                 E=E1;
-//##############################################################################################################################
-//##############################################################################################################################
             }
             clock_t end = clock();
             double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
@@ -448,16 +429,23 @@ int main(int argc,char* argv[])
 
         cout<<"average H="<<avg<<"\n";
         //The 2 paramenter entropy array is updated and sampling is again done with the modified entropy
+	snprintf(buffer,sizeof(char)*32,"diff_mp_%i.dat",j);
+        diff.open(buffer);
         for(int i=0; i<3*EN+1; i++)
             for(int j=0; j<EN+1; j++)
             {
                 if (Histogram_mp[i][j]!=0)
-                    entropy_mp[i][j]=entropy_mp[i][j]+log(Histogram_mp[i][j]/avg)/EN;
+		    {
+                    	entropy_mp[i][j]=entropy_mp[i][j]+log(Histogram_mp[i][j]/avg)/EN;
+		    	diff<<i<<"\t"<<j<<"\t"<<log(Histogram_mp[i][j]/avg)<<"\n";
+		    }
+		else 
+			diff<<i<<"\t"<<j<<"\t"<<" "<<"\n";
             }
+	diff.close();
         snprintf(buffer,sizeof(char)*32,"Histogram_mp_%i.dat",j);
         his.open(buffer);
-
-	        count=0;
+        count=0;
         flag=0;
         //The Histogram is written after each sampling
         for(int i=0; i<3*EN+1; i++)
@@ -465,7 +453,7 @@ int main(int argc,char* argv[])
             {
                 if(Histogram_mp[i][j]!=0)
                 {
-                    his<<i<<"\t"<<j<<"\t"<<Histogram_mp[i][j]<<"\t"<<(Histogram_mp[i][j]-avg)/avg<<"\n";
+                    his<<i<<"\t"<<2*j-EN<<"\t"<<Histogram_mp[i][j]<<"\t"<<(Histogram_mp[i][j]-avg)/avg<<"\n";
                     //The flatness of the histogram is calculated
                     count=count+((Histogram_mp[i][j]-avg)/avg)*((Histogram_mp[i][j]-avg)/avg);
                     flag=flag+1;

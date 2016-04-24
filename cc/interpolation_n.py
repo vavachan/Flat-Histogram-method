@@ -17,7 +17,7 @@ N1=int(L1*L1*L1)
 entropy_L=np.zeros(shape=(N+1,3*N+1))
 entropy=np.zeros(shape=(N1+1,3*N1+1))
 for m in range (0,N+1):
-        for n in range (int(A[m][3]),int(A[m][1]),2):
+        for n in range (int(A[m][3]),int(A[m][1])+2,2):
                 entropy_L[m][n]=1
 #now entropy_L2 has non-zero value if the configuration class is allowed.
 entropy_L[0][3*N]=1
@@ -27,7 +27,7 @@ entropy_L[N-1][3*N-6]=1
 exec "A=np.loadtxt('entropy_mp_9.dat')" 
 for i in range (0,len(A)):
         entropy[int((A[i][1]+N1)/2)][int(A[i][0])]=float(A[i][2])
-for n in range (40,560,2):
+for n in range (40,540,2):
 	A=[]
 	B=[] #n=int(sys.argv[2])
 	for m in range (0,N1+1):
@@ -52,11 +52,6 @@ for n in range (40,560,2):
 		#	print n,m1,m2*1.0/N1,func(m1,popt[0],popt[1],popt[2],popt[3],popt[4]),entropy[int((m2+N1)/2.0)][n]
 			entropy_L[m][n1]=N*func(m1,popt[0],popt[1],popt[2],popt[3],popt[4])
 #print int(N*560.0/N1)
-for n in range (0,3*N+1):
-	for m in range (0,N+1):
-		if(entropy_L[m][n]!=0 and entropy_L[m][n]!=1):
-			break
-			print m,n,entropy_L[m][n]
 for m in range (50,N-50):
 	A=[]
 	B=[]
@@ -74,7 +69,7 @@ for m in range (50,N-50):
 		Y[i]=A[i]*1.0/N
 	tck = interpolate.splrep(X,Y,s=0)
 	#print m,int(B[0])
-	for n in range (int(B[0]),int(B[len(A)-1])+1,2):
+	for n in range (int(B[0])-2,int(B[len(A)-1])+1,2):
 		if (entropy_L[m][n]!=0):
 			xnew.append(n*1.0/N)		
 	#tck = interpolate.splrep(y,x,s=0)				
@@ -84,10 +79,16 @@ for m in range (50,N-50):
 		entropy_L[m][int(N*xnew[n])]=N*ynew[n]
 		#print xnew[n],ynew[n],entropy_L[m][int(N*xnew[n])]*1.0/N	
 						
+
 exec "A=np.loadtxt('entropy_2para_8.dat')" 
 for i in range (0,len(A)):
 	if(entropy_L[int((A[i][1]+N)/2)][int(A[i][0])]==1):
     		entropy_L[int((A[i][1]+N)/2)][int(A[i][0])]=float(A[i][2])
+for n in range (0,3*N+1):
+	for m in range (0,N+1):
+		if(entropy_L[m][n]!=0 and entropy_L[m][n]!=1):
+			break
+			print m,n,entropy_L[m][n]
 
 for m in range (50,N-50):
 	A=[]
