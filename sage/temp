@@ -1,0 +1,5 @@
+#		for  ((T=1 ; T<=300 ; T++))
+#		do 
+#			t=$(echo "scale=2;$T/100.0" | bc)
+			python self.py $p $h   
+#		done
