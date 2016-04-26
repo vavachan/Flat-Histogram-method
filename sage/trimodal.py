@@ -2,6 +2,7 @@ import numpy as np
 import math
 from cmath import sqrt
 import sys
+import pylab as pl
 def g_0(x,p,a):
 	return -1/2*(1j*sqrt(3) + 1)*(1/54*((9*p**2*x + 2*x**3 - 9*p*x)*a**2 - 27*p**2*x + 9*p*x)/(a**2*p**3) + 1/6*sqrt(-4/3*a**6*p**4 - 4/3*a**4*x**4 + 4*(a**6 - a**4)*p**3 - 4*(a**6 - 2*a**4 + a**2)*p**2 - 1/3*(a**6 - 2*a**4 + (a**6 + 18*a**4 - 27*a**2)*p**2 + a**2 - 2*(a**6 + 8*a**4 - 9*a**2)*p)*x**2 + 4/3*(a**6 - 3*a**4 + 3*a**2 - 1)*p)/(a**3*p**2))**(1/3) + 1/3*x/p - 1/18*((3*p**2 + x**2 - 3*p)*a**2 + 3*p)*(-1j*sqrt(3) + 1)/(a**2*p**2*(1/54*((9*p**2*x + 2*x**3 - 9*p*x)*a**2 - 27*p**2*x + 9*p*x)/(a**2*p**3) + 1/6*sqrt(-4/3*a**6*p**4 - 4/3*a**4*x**4 + 4*(a**6 - a**4)*p**3 - 4*(a**6 - 2*a**4 + a**2)*p**2 - 1/3*(a**6 - 2*a**4 + (a**6 + 18*a**4 - 27*a**2)*p**2 + a**2 - 2*(a**6 + 8*a**4 - 9*a**2)*p)*x**2 + 4/3*(a**6 - 3*a**4 + 3*a**2 - 1)*p)/(a**3*p**2))**(1/3))
 def taylor(x,p,a):
@@ -43,6 +44,12 @@ for i in range (1,2000-1):
 ########print(abs(x_min),succ(x_min,p,beta,h))
 #print(1.0/beta,abs(x_min),beta/(-beta+der_g(x_min,p,beta,h)))
 #print(abs(x_min))
+X=[]
+Y=[]
 for i in range (1,2000-1):
 	x=(i-1000)/1000.0
-	print(x,f_star(x,p,beta,h)-F(x,beta)-min,g_0(x,p,b).real,np.tanh(beta*x),abs(x_min))#I(0,p,beta,h)-min)#f(x,p,beta,h),x*g_0(x,p,b).real)#np.tanh(beta*x),g_0(x,p,b).real,g_1(x,p,b).real,g_2(x,p,b).real)
+	X.append(x)
+	Y.append(f_star(x,p,beta,h)-F(x,beta)-min)
+	#print(x,f_star(x,p,beta,h)-F(x,beta)-min,g_0(x,p,b).real,np.tanh(beta*x),abs(x_min))#I(0,p,beta,h)-min)#f(x,p,beta,h),x*g_0(x,p,b).real)#np.tanh(beta*x),g_0(x,p,b).real,g_1(x,p,b).real,g_2(x,p,b).real)
+pl.plot(X,Y)
+pl.show()
