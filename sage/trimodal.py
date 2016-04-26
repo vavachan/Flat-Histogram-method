@@ -42,7 +42,7 @@ for i in range (1,2000-1):
 		x_min=x
 ########print(abs(x_min),succ(x_min,p,beta,h))
 #print(1.0/beta,abs(x_min),beta/(-beta+der_g(x_min,p,beta,h)))
-#print(abs(x_min))
-for i in range (1,2000-1):
-	x=(i-1000)/1000.0
-	print(x,f_star(x,p,beta,h)-F(x,beta)-min,g_0(x,p,b).real,np.tanh(beta*x),abs(x_min))#I(0,p,beta,h)-min)#f(x,p,beta,h),x*g_0(x,p,b).real)#np.tanh(beta*x),g_0(x,p,b).real,g_1(x,p,b).real,g_2(x,p,b).real)
+print(abs(x_min))
+#for i in range (1,2000-1):
+#	x=(i-1000)/1000.0
+#	print(x,f_star(x,p,beta,h)-F(x,beta)-min,g_0(x,p,b).real,np.tanh(beta*x),abs(x_min))#I(0,p,beta,h)-min)#f(x,p,beta,h),x*g_0(x,p,b).real)#np.tanh(beta*x),g_0(x,p,b).real,g_1(x,p,b).real,g_2(x,p,b).real)
