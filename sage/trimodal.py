@@ -46,10 +46,23 @@ for i in range (1,2000-1):
 #print(abs(x_min))
 X=[]
 Y=[]
+Z=[]
+P=[]
+X_min=[]
 for i in range (1,2000-1):
 	x=(i-1000)/1000.0
 	X.append(x)
-	Y.append(f_star(x,p,beta,h)-F(x,beta)-min)
+	Y.append(np.tanh(beta*x))
+	Z.append(g_0(x,p,b).real)
+	P.append(f_star(x,p,beta,h)-F(x,beta)-min)
+	X_min.append(abs(x_min))
 	#print(x,f_star(x,p,beta,h)-F(x,beta)-min,g_0(x,p,b).real,np.tanh(beta*x),abs(x_min))#I(0,p,beta,h)-min)#f(x,p,beta,h),x*g_0(x,p,b).real)#np.tanh(beta*x),g_0(x,p,b).real,g_1(x,p,b).real,g_2(x,p,b).real)
+pl.figure(1)
+pl.subplot(211)
 pl.plot(X,Y)
+pl.plot(X,Z)
+pl.plot((X_min),X)
+pl.subplot(212)
+pl.plot(X,P)
+#pl.plot((X_min),X)
 pl.show()
