@@ -25,27 +25,27 @@ def energy_n():
 	for i in range (0,L):
 		for j in range (0,L):
 			for k in range (0,L):
-            	            Ni_plus=i+1
-       			    Ni_minus=i-1
-			    Nj_plus=j+1
-			    Nj_minus=j-1
-			    Nk_plus=k+1
-			    Nk_minus=k-1
-			    if (i==0):
-				Ni_minus=L-1
-			    if (i==L-1):
-				Ni_plus=0
-			    if (j==0):
-				Nj_minus=L-1
-			    if (j==L-1):
-				Nj_plus=0
-			    if (k==0):
-				Nk_minus=L-1
-			    if (k==L-1):
-				Nk_plus=0
+				Ni_plus=i+1
+				Ni_minus=i-1
+				Nj_plus=j+1
+				Nj_minus=j-1
+				Nk_plus=k+1
+				Nk_minus=k-1
+				if (i==0):
+				    Ni_minus=L-1
+				if (i==L-1):
+				    Ni_plus=0
+				if (j==0):
+				    Nj_minus=L-1
+				if (j==L-1):
+				    Nj_plus=0
+				if (k==0):
+				    Nk_minus=L-1
+				if (k==L-1):
+					Nk_plus=0
 #Energy is the -1*sum_{allpaires}(s_i*s_j), hence this function returns the nnumber of unlike bonds.
-			    Energy=Energy+-1*(ISING[i][j][k]*ISING[i][Nj_plus][k]+ISING[i][j][k]*ISING[i][Nj_minus][k]+ISING[i][j][k]*ISING[Ni_plus][j][k]+ISING[i][j][k]*ISING[Ni_minus][j][k]+ISING[i][j][k]*ISING[i][j][Nk_plus]+ISING[i][j][k]*ISING[i][j][Nk_minus])
-        return (3*N+Energy/2)/2
+				Energy=Energy+-1*(ISING[i][j][k]*ISING[i][Nj_plus][k]+ISING[i][j][k]*ISING[i][Nj_minus][k]+ISING[i][j][k]*ISING[Ni_plus][j][k]+ISING[i][j][k]*ISING[Ni_minus][j][k]+ISING[i][j][k]*ISING[i][j][Nk_plus]+ISING[i][j][k]*ISING[i][j][Nk_minus])
+	return (3*N+Energy/2)/2
 
 for i in range (0,N):
 	if i*i*i>N_plus:
@@ -164,7 +164,7 @@ sq=L*L
 S=N_plus_t/sq
 R=N_plus_t%sq
 #print S,R
-for i in range (0,S):
+for i in range (0,int(S)):
 	for j in range (0,L):
 		for k in range (0,L):
 			ISING[i][j][k]=1	
@@ -197,7 +197,7 @@ if(sides[0]>sides[1]):
 else:
 	for i in range (0,int(rem)):
 		ISING[S][sides[0]][i]=1
-print ISING
 E4=energy_n()
-print float(2*N_plus_t-N),3*N-E1,3*N-E2,3*N-E3,3*N-E4#(3*N-min(E1,E2,E3,E4)),(3*N-min(E1,E2,E3)),float(3*N-6*N_plus)
+print(float(2*N_plus_t-N),(3*N-min(E1,E2,E3,E4)),float(3*N-6*N_plus))
+#3*N-E1,3*N-E2,3*N-E3,3*N-E4#(3*N-min(E1,E2,E3,E4)),(3*N-min(E1,E2,E3)),float(3*N-6*N_plus)
 # the magnetization, number of like bonds. 
